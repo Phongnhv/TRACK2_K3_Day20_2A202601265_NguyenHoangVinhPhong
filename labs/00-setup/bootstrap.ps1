@@ -7,6 +7,16 @@
 $ErrorActionPreference = 'Stop'
 Set-Location (Join-Path $PSScriptRoot '..\..')
 
+# Match lab.ps1: prevent legacy Windows code pages from breaking Python's
+# Unicode output during setup or the first hardware probe.
+try {
+    $Utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [Console]::OutputEncoding = $Utf8NoBom
+    $OutputEncoding = $Utf8NoBom
+} catch {}
+$env:PYTHONUTF8 = '1'
+$env:PYTHONIOENCODING = 'utf-8'
+
 if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
     Write-Host "ERROR: Python not found. Install 3.10+ from https://www.python.org/downloads/" -ForegroundColor Red
     Write-Host "       Tick 'Add python.exe to PATH' in the installer." -ForegroundColor Yellow

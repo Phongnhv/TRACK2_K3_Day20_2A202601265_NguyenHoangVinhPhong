@@ -8,6 +8,7 @@ thấy** và **file được sinh ra**. Các file đó là bằng chứng để 
 > ### 🪟 Windows: đọc phần này trước
 > Windows không có `make`. Khi hướng dẫn ghi `make <target>`, hãy dùng
 > **`.\lab.ps1 <target>`** với cùng tên target.
+> Runner này tự cấu hình UTF-8, nên không cần tự đặt `PYTHONIOENCODING`.
 >
 > ```powershell
 > powershell -ExecutionPolicy Bypass -File labs/00-setup/bootstrap.ps1   # chỉ chạy 1 lần

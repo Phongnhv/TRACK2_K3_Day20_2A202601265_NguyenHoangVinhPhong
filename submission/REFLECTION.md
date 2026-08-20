@@ -33,8 +33,9 @@ _(Nếu dùng cloud fallback: nói rõ vì sao — RAM < 8 GB, setup fail, v.v. 
 nào fail rồi phải workaround không?
 
 Setup chạy local với Python 3.12, runtime CUDA prebuilt b10488 và hai model GGUF. Probe
-lần đầu gặp lỗi mã hóa console Windows; đặt `PYTHONIOENCODING=utf-8` rồi chạy lại thành
-công. Không cần cloud hay compiler.
+lần đầu cho thấy console Windows dùng encoding không hiển thị được Unicode; tôi đã sửa
+`lab.ps1` và thư viện chung để tự cấu hình UTF-8, nên các lệnh sau đó chạy không cần
+đặt biến môi trường thủ công. Không cần cloud hay compiler.
 
 ---
 

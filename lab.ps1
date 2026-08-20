@@ -22,6 +22,17 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot
 
+# Python otherwise inherits Windows' legacy active code page (often cp1252),
+# which cannot render the Unicode symbols used by the lab reports and verifier.
+# Keep this local to the runner so every target has a reproducible UTF-8 console.
+try {
+    $Utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [Console]::OutputEncoding = $Utf8NoBom
+    $OutputEncoding = $Utf8NoBom
+} catch {}
+$env:PYTHONUTF8 = '1'
+$env:PYTHONIOENCODING = 'utf-8'
+
 $VenvPy = Join-Path $PSScriptRoot '.venv\Scripts\python.exe'
 $Port   = if ($env:LAB_SERVER_PORT) { $env:LAB_SERVER_PORT } else { '8080' }
 $SysPy  = 'python'

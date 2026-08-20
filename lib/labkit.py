@@ -24,6 +24,28 @@ import time
 from contextlib import contextmanager
 from pathlib import Path
 
+
+def _configure_windows_utf8() -> None:
+    """Keep the lab runnable from a legacy Windows console code page.
+
+    The reports intentionally use readable Unicode symbols.  Python inherits the
+    active console encoding on Windows, which can still be cp1252 and cannot
+    encode those symbols.  Reconfigure streams at the shared import boundary so
+    every lab command works both through ``lab.ps1`` and when called directly.
+    """
+    if os.name != "nt":
+        return
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="backslashreplace")
+        except (AttributeError, OSError):
+            # Some embedded or redirected streams do not expose reconfigure().
+            # In that case the runner's PYTHONIOENCODING setting remains the fallback.
+            pass
+
+
+_configure_windows_utf8()
+
 # Pinned llama.cpp release. Gemma 4 (architecture "gemma4", April 2026) needs a
 # build newer than that; this one is well past it. Bump deliberately, not casually.
 LLAMA_CPP_BUILD = "b10488"
